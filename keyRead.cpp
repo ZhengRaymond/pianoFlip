@@ -9,12 +9,14 @@ double d = 0;
 
 void keyPrint(int key, int oct, double dur) {
 	if (key) {
-		cout << "note\t" << d << "\t" << dur << "\t" << oct << "\t126" << endl;
+		cout << "note\t" << d << "\t" << dur << "\t" << oct << endl;
 	}
 	else {
-		cout << "rest\t" << d << "\t" << dur << "\t" << -1 << "\t126" << endl;
+		cout << "rest\t" << d << "\t" << dur << "\t" << -1 << endl;
 	}
 }
+
+// Usage: KEY OCTAVE DURATION
 
 int main() {
 	string key;
