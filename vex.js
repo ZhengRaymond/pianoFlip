@@ -1,70 +1,102 @@
-var scoreData = '{"notes": [ { "name": "C4", "midi": 60, "time": 0, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "C4", "midi": 60, "time": 1, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "G4", "midi": 67, "time": 2, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "G4", "midi": 67, "time": 3, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "A4", "midi": 69, "time": 4, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "F4", "midi": 65, "time": 5, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "A4", "midi": 69, "time": 6, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "G4", "midi": 67, "time": 7, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "F4", "midi": 65, "time": 9, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "F4", "midi": 65, "time": 10, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "E4", "midi": 64, "time": 11, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "E4", "midi": 64, "time": 12, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "D4", "midi": 62, "time": 13, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "D4", "midi": 62, "time": 14, "velocity": 0.9921259842519685, "duration": 1 }, { "name": "C4", "midi": 60, "time": 15, "velocity": 0.9921259842519685, "duration": 2 } ]}';
-// Create an SVG renderer and attach it to the DIV element named "boo".
-var vf = new Vex.Flow.Factory({
-    renderer: {
-        selector: 'boo'
-    }
-});
-var score = vf.EasyScore();
-var system = vf.System();
+var score = JSON.parse(scoreData);
 
-function drawMusic(i) {
-    var sheet = JSON.parse(scoreData).notes;
-    var t = 0;
-    var s = '';
-    while (t < 4) {
-        if (t > 0) {
-            s += ', ';
-        }
-        s += sheet[i].name;
-        s += '/';
-        switch (sheet[i].duration) {
-            case 1:
-                s += 'q';
-                break;
-            case 2:
-                s += 'h';
-                break;
-            case 4:
-                s += 'w';
-                break;
-            case 0.5:
-                s += '8';
-                break;
-            case 0.25:
-                s += '16';
-                break;
-        }
-        t += sheet[i].duration;
-        i++;
-    }
+VF = Vex.Flow;
 
-    system.addStave({
-        voices: [
-    score.voice(
-                score.notes(s)
-    )
-  ]
-    }).addClef('treble').addTimeSignature('4/4');
+var renderer1 = new VF.Renderer(document.getElementById("display1"), VF.Renderer.Backends.SVG);
+renderer1.resize(800, 500);
 
+// var renderer2 = new VF.Renderer(document.getElementById("display2"), VF.Renderer.Backends.SVG);
+// renderer2.resize(500, 500);
 
+// var context2 = renderer2.getContext();
+// context2.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+// var stave2 = new VF.Stave(10, 40, 400);
+// stave2.addClef("treble").addTimeSignature("4/4");
+// stave2.setContext(context2).draw();
+
+var durationValues = {
+    0.75: 'q',
+    1.5: 'h',
+    3: '3',
+    0.375: '8',
+    0.1875: '16'
 }
 
-drawMusic(0);
-vf.draw();
+function drawMusic(block, my_renderer) {
+    var my_context = my_renderer.getContext();
+    my_context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+    var my_stave = new VF.Stave(10, 40, 650);
+    my_stave.addClef("treble").addTimeSignature("4/4");
+    my_stave.setContext(my_context).draw();
+    my_stave.drawVerticalBar(345, true);
+    var code = [];
+    var index = 0;
+    for (; index < score.notes.length; index++) {
+        if (score.notes[index].time >= block * 3) {
+            break;
+        }
+    }
+    while (true) {
+        if (index >= score.notes.length || score.notes[index].time >= block * 3 + 6) {
+            break;
+        }
+
+        var options = {
+            clef: "treble",
+            keys: [],
+            duration: durationValues[score.notes[index].duration]
+        }
+
+        var noteTime = score.notes[index].time;
+        do {
+            var noteName = score.notes[index].name.toLowerCase();
+            if (noteName.charAt(1) == "#") {
+                noteName = noteName.charAt(0) + noteName.charAt(1) + "/" + noteName.charAt(2);
+            }
+            else {
+                noteName = noteName.charAt(0) + "/" + noteName.charAt(1);
+            }
+            options.keys.push(noteName);
+            index++;
+        } while (index < score.notes.length && score.notes[index].time == noteTime);
+
+
+        // TODO: Implement Accidentals for chords: https://github.com/0xfe/vexflow/wiki/The-VexFlow-Tutorial
+        var newNote;
+        if (name.indexOf("#") != -1) {
+            newNote = new VF.StaveNote(options).addAccidental(0, new VF.Accidental("#"));
+        }
+        else {
+            newNote = new VF.StaveNote(options);
+        }
+        code.push(newNote);
+    }
+
+    var beams = VF.Beam.generateBeams(code);
+    Vex.Flow.Formatter.FormatAndDraw(my_context, my_stave, code);
+    beams.forEach(function(b) {b.setContext(my_context).draw()})
+    return my_context;
+}
+
+// var lastContext = drawMusic(2, renderer1);
+// lastContext.clear();
+// drawMusic(1, renderer1);
+
+// drawMusic(1, context2, stave2);
+
 
 
 /* OLD VERSION - DOESN'T USE EASYSCALE
 
 VF = Vex.Flow;
 
-// Create an SVG renderer and attach it to the DIV element named "boo".
+// Create an SVG renderer1 and attach it to the DIV element named "boo".
 var div = document.getElementById("boo");
-var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+var renderer1 = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 // Configure the rendering context.
-renderer.resize(500, 500);
-var context = renderer.getContext();
+renderer1.resize(500, 500);
+var context = renderer1.getContext();
 context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
 // Create a stave of width 400 at position 10, 40 on the canvas.

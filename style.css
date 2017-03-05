@@ -1,0 +1,40 @@
+#display {
+    float: right;
+    background-image: url("parchment.jpg");
+    border-style: double;
+    width: 70%;
+    height: 294px;
+}
+
+#display div {
+    margin: 10px;
+    padding: 40px;
+    padding-top: 0;
+    width: 100%;
+}
+
+#display1 {
+    float: left;
+}
+
+#display2 {
+     float: right;
+}
+
+.informationPanel {
+    font-family: "Calibri Light";
+    font-size: 1.5em;
+
+    border-style: double;
+    background-color: #000;
+    color: #fff;
+
+    margin-left: 40px;
+    float: right;
+    padding: 20px;
+    padding-left: 40px;
+    width: 18%;
+    height: 500px;
+    overflow: hidden;
+    overflow-x: hidden;
+}

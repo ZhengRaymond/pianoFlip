@@ -9,8 +9,9 @@
 
     <script type='text/javascript' src="score.js"></script>
     <script type='text/javascript' src="MIDImatch.js"></script>
-
-
+	
+    <script src="https://unpkg.com/vexflow/releases/vexflow-min.js"></script>
+    <script src="vex.js"></script>
 </head>
 <body onload="buildScore()">
 <audio id="sound-A2" src="samples/A2.ogg" preload="auto"></audio>
@@ -86,6 +87,7 @@
             <p>Upper octaves:  White: "q" - "p"  Black: "2" - "9"</p>
             <p>Upper octaves:  White: "z" - "m"  Black: "s" - "j"</p>
         </div>
+		<div id="display"></div>
     </div>
 </div>
 <script src="piano.js"></script>
