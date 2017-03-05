@@ -20,9 +20,9 @@
     /* Piano keyboard pitches. Names match sound files by ID attribute. */
 
     var keys =[
-        'A2', 'Bb2', 'B2', 'C3', 'Db3', 'D3', 'Eb3', 'E3', 'F3', 'Gb3', 'G3', 'Ab3',
-        'A3', 'Bb3', 'B3', 'C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4',
-        'A4', 'Bb4', 'B4', 'C5'
+        'A2', 'As2', 'B2', 'C3', 'Cs3', 'D3', 'Ds3', 'E3', 'F3', 'Fs3', 'G3', 'Gs3',
+        'A3', 'As3', 'B3', 'C4', 'Cs4', 'D4', 'Ds4', 'E4', 'F4', 'Fs4', 'G4', 'Gs4',
+        'A4', 'As4', 'B4', 'C5'
     ];
 
     /* Corresponding keyboard keycodes, in order w/ 'keys'. */
@@ -77,6 +77,8 @@
     function press(key) {
         var audio = sound(key);
         process(key);
+        process2(key);
+        process3(key);
         if (depressed[key]) {
             return;
         }

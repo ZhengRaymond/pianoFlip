@@ -19,6 +19,12 @@ audio {
     display: none;
 }
 
+.title {
+    font-family: "Calibri Light";
+    font-size: 3em;
+    text-align: center;
+}
+
 .piano-javascript {
     border: 3px solid #f88;
     display: block;
@@ -27,7 +33,7 @@ audio {
 .piano {
     padding: 5px;
     margin: 0 auto;
-    width: 550px;
+    width: 80%;
 }
 
 .piano-container, .piano-javascript {
@@ -48,7 +54,10 @@ audio {
 
 .piano-pedal {
     margin: 10px;
-    color: rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 1.2em;
+    font-family: "Calibri Light";
 }
 
 .piano-sustain {
@@ -91,4 +100,22 @@ audio {
     position: relative;
     left: -10px;
     background-color: black;
+}
+
+.informationPanel {
+    font-family: "Calibri Light";
+    font-size: 1.5em;
+
+    border-style: double;
+    background-color: #000;
+    color: #fff;
+
+    margin-right: 6%;
+    float: left;
+    padding: 20px;
+    padding-left: 40px;
+    width: 50%;
+    height: 500px;
+    overflow: hidden;
+    overflow-x: hidden;
 }

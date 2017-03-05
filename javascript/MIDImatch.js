@@ -32,25 +32,102 @@ var time = 0;
 function clock() {
     time++;
 }
-setInterval(clock, 100);
-var timePerBeat;
+setInterval(clock, 10);
+var timePerBeat = 0;
+var noteCount = 0;
 var lastNoteTime = 0;
 
-function process(key) {
-    if (key === false) {
-        time += 200;
-    }
-    if (time - lastNoteTime > 200) { // restart
+var score;
+var loc = 0;
 
+function process(key) {
+    if (key === false || time - lastNoteTime > 2000) {
+        time = 0;
+        noteCount = 0;
+        timePerBeat = 0;
+        lastNoteTime = time;
     }
-    console.log(key);
+    else if (time - lastNoteTime < 300 && noteCount < 50){
+        if (noteCount > 2) {
+            var diff = time - lastNoteTime;
+            var avg = timePerBeat / (noteCount - 1);
+            if (Math.abs(diff - avg) / avg < 0.2) {
+                timePerBeat += time - lastNoteTime;
+                noteCount++;
+            }
+        }
+        else {
+            if (noteCount == 0) {
+                noteCount++;
+            }
+            else if (noteCount == 1) {
+                timePerBeat = time - lastNoteTime;
+                noteCount++;
+            }
+            else if (noteCount == 2) {
+               var diff = time - lastNoteTime;
+               if (Math.abs(diff - timePerBeat) / timePerBeat < 0.4) {
+                   timePerBeat = timePerBeat + diff;
+                   noteCount++;
+               }
+               else {
+                   noteCount = 0;
+                   timePerBeat = 0;
+               }
+            }
+        }
+    }
+    lastNoteTime = time;
+    if (noteCount > 3 && timePerBeat > 5) {
+        document.getElementById("infoBPM").innerHTML = "BPM: " + Math.round(600000 / (timePerBeat / (noteCount - 1))) / 100 + " beats per minute.";
+    }
+    else {
+        document.getElementById("infoBPM").innerHTML = "BPM: Calculating...";
+    }
+
+    document.getElementById("infoLocation").innerHTML = "Location: " + loc;
 }
 
-function buildScore() {
-    var score = JSON.parse(scoreData);
-    var currIndex = 0;
+function process2(key) {
+    // End of song
+    // if (loc >= score.notes.length) {
+    //     return;
+    // }
 
-    // console.log(score.notes[0].name);
-    // console.log(score.notes[0].time);
-    // console.log(score.notes[0].duration);
+    try {
+        if (score.notes[loc].name == key) {
+            console.log("TRUE: " + key);
+            loc++;
+        }
+        else if (score.notes[loc + 1].name == key) {
+            console.log("TRUE: " + key);
+            loc += 2;
+        }
+        else if (score.notes[loc + 2].name == key) {
+            console.log("TRUE: " + key);
+            loc += 3;
+        }
+        else if (score.notes[loc - 1].name == key) {
+            console.log("TRUE: " + key);
+            // loc stay the same
+        }
+        else if (score.notes[loc - 2].name == key) {
+            console.log("TRUE: " + key);
+            loc -= 1;
+        }
+    } catch (err) {
+        console.log("Error: " + err);
+        console.log("        Out of bounds in process2.");
+    }
+    // console.log("Location: " + loc);
+    console.log("       KEY: " + key);
+}
+
+function process3(key) {
+
+}
+
+
+function buildScore() {
+    score = JSON.parse(scoreData);
 }
