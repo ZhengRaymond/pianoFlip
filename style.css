@@ -1,40 +1,46 @@
-#display {
-    float: right;
-    background-image: url("parchment.jpg");
-    border-style: double;
-    width: 70%;
-    height: 294px;
+body,
+h1,
+.container,
+#sidr {
+    font-family: "Muli", sans-serif;
 }
-
-#display div {
-    margin: 10px;
-    padding: 40px;
-    padding-top: 0;
-    width: 100%;
-}
-
-#display1 {
-    float: left;
-}
-
-#display2 {
-     float: right;
-}
-
-.informationPanel {
-    font-family: "Calibri Light";
-    font-size: 1.5em;
-
-    border-style: double;
+.sidr {
+    display: block;
+    position: fixed;
     background-color: #000;
     color: #fff;
-
-    margin-left: 40px;
-    float: right;
-    padding: 20px;
-    padding-left: 40px;
-    width: 18%;
-    height: 500px;
-    overflow: hidden;
+    font-size: 1.3em;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    width: 260px;
     overflow-x: hidden;
+    overflow-y: auto
+}
+.sidr.right {
+    left: auto;
+    right: -260px
+}
+.sidr.left {
+    left: -260px;
+    right: auto
+}
+#display {
+    margin: 0 auto;
+}
+#toggleBar {
+    float: right;
+    min-height: 100vh;
+    min-width: 1%;
+    padding: 1%;
+    background-color: #000;
+}
+span.glyphicon-chevron-right {
+    color: white;
+    font-size: 2em;
+}
+.vcenter {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
