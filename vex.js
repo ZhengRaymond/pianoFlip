@@ -22,6 +22,7 @@ var durationValues = {
     0.1875: '16'
 }
 
+
 function drawMusic(block, my_renderer) {
     var my_context = my_renderer.getContext();
     my_context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
@@ -81,7 +82,6 @@ function drawMusic(block, my_renderer) {
         }
         code.push(newNote);
     }
-
     var beams = VF.Beam.generateBeams(code);
     if (loc != 0) code[redNode].setStyle({ strokeStyle: "red", fillStyle: "red"});
     Vex.Flow.Formatter.FormatAndDraw(my_context, my_stave, code);

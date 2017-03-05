@@ -75,6 +75,10 @@
     };
 
     function press(key) {
+        $(pianoClass(key)).animate({
+            'backgroundColor': '#88FFAA'
+        }, 0);
+
         var audio = sound(key);
         process(key);
         process2(key);
@@ -92,9 +96,6 @@
                 depressed[key] = true;
             }
         }
-        $(pianoClass(key)).animate({
-            'backgroundColor': '#88FFAA'
-        }, 0);
     };
 
     /* Manually diminish the volume when the key is not sustained. */

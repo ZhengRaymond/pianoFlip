@@ -78,6 +78,7 @@ function process(key) {
             }
         }
     }
+
     lastNoteTime = time;
     if (noteCount > 3 && timePerBeat > 5) {
         document.getElementById("infoBPM").innerHTML = "BPM: " + Math.round(600000 / (timePerBeat / (noteCount - 1))) / 100 + " beats per minute.";
@@ -87,6 +88,21 @@ function process(key) {
     }
 
     document.getElementById("infoLocation").innerHTML = "Location: " + loc;
+    document.getElementById("infoBeat").innerHTML = "Beat: " + score.notes[loc].time * 4/3;
+    var lastValue;
+    if (loc == 0) {
+        lastValue = "N/A";
+    } else {
+        lastValue = score.notes[loc - 1].name;
+    }
+    document.getElementById("infoLastNote").innerHTML = "Last Note: " + lastValue;
+    var nextValue;
+    if (loc == score.notes.length - 2) {
+        nextValue = "End of song.";
+    } else {
+        nextValue = score.notes[loc + 1].name;
+    }
+    document.getElementById("infoNextNote").innerHTML = "Next Note: " + nextValue;
 }
 
 function process2(key) {
