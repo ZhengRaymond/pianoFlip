@@ -4,15 +4,15 @@
 
 using namespace std;
 
-double d = 0;
+double loc = 0;
 
 
-void keyPrint(int key, int oct, double dur) {
+void keyPrint(int key, double dur, int note) {
 	if (key) {
-		cout << "note\t" << d << "\t" << dur << "\t" << oct << endl;
+		cout << "note\t" << loc << "\t" << dur << "\t" << note << endl;
 	}
 	else {
-		cout << "rest\t" << d << "\t" << dur << "\t" << -1 << endl;
+		cout << "rest\t" << loc << "\t" << dur << "\t" << -1 << endl;
 	}
 }
 
@@ -39,9 +39,8 @@ int main() {
 
 	
 	while (cin >> key) {
-		cin >> oct;
-		cin >> dur;
+		cin >> oct >> dur;
 		keyPrint(keys[key], (keys[key] + (12 * oct)), dur);
-		d += dur;
+		loc += dur;
 	}
 }
