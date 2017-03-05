@@ -3,7 +3,7 @@ var score = JSON.parse(scoreData);
 VF = Vex.Flow;
 
 var renderer1 = new VF.Renderer(document.getElementById("display1"), VF.Renderer.Backends.SVG);
-renderer1.resize(800, 500);
+renderer1.resize(660, 500);
 
 // var renderer2 = new VF.Renderer(document.getElementById("display2"), VF.Renderer.Backends.SVG);
 // renderer2.resize(500, 500);
@@ -29,6 +29,7 @@ function drawMusic(block, my_renderer) {
     my_stave.addClef("treble").addTimeSignature("4/4");
     my_stave.setContext(my_context).draw();
     my_stave.drawVerticalBar(345, true);
+    var redNode = 0;
     var code = [];
     var index = 0;
     for (; index < score.notes.length; index++) {
@@ -63,18 +64,28 @@ function drawMusic(block, my_renderer) {
 
         // TODO: Implement Accidentals for chords: https://github.com/0xfe/vexflow/wiki/The-VexFlow-Tutorial
         var newNote;
-        if (name.indexOf("#") != -1) {
+        if (noteName == "a#/4") {
+            options.keys[0] = "bb/4";
+            newNote = new VF.StaveNote(options).addAccidental(0, new VF.Accidental("b"));
+        }
+        else if (noteName.charAt(1) == "#") {
+            console.log("Accidental");
             newNote = new VF.StaveNote(options).addAccidental(0, new VF.Accidental("#"));
         }
         else {
             newNote = new VF.StaveNote(options);
         }
+        if (index - 1 < loc - 1) {
+            redNode ++;
+            // newNote.setStyle({ strokeStyle: "red", fillStyle: "red"});
+        }
         code.push(newNote);
     }
 
     var beams = VF.Beam.generateBeams(code);
+    if (loc != 0) code[redNode].setStyle({ strokeStyle: "red", fillStyle: "red"});
     Vex.Flow.Formatter.FormatAndDraw(my_context, my_stave, code);
-    beams.forEach(function(b) {b.setContext(my_context).draw()})
+    beams.forEach(function(b) {console.log("Beam: " + b); b.setContext(my_context).draw()})
     return my_context;
 }
 

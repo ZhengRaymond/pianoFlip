@@ -91,11 +91,14 @@ function process(key) {
 
 function process2(key) {
     // End of song
-    // if (loc >= score.notes.length) {
-    //     return;
-    // }
+    if (loc >= score.notes.length) {
+        return;
+    }
 
     try {
+        if (key.charAt(1) == "s") {
+            key = key.charAt(0) + "#" + key.charAt(2);
+        }
         if (score.notes[loc].name == key) {
             console.log("TRUE: " + key);
             loc++;
@@ -120,10 +123,11 @@ function process2(key) {
         // console.log("Error: " + err);
         // console.log("        Out of bounds in process2.");
     }
-    // console.log("Location: " + loc);
     lastContext.clear();
-    console.log("LOCATION: " + score.notes[loc].time);
-    lastContext = drawMusic(Math.floor(score.notes[loc].time / 3), renderer1);
+    if (loc == 0) {
+        lastContext = drawMusic(Math.floor(score.notes[loc].time / 3), renderer1);
+    }
+    lastContext = drawMusic(Math.floor(score.notes[loc - 1].time / 3), renderer1);
 }
 
 function process3(key) {
